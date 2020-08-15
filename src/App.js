@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
 
-function App() {
+import Header from './components/Header/Header'
+import Button from './UI/Button/Button'
+import Modal from './UI/Modal/Modal'
+import AddGalleryItem from './components/AddGalleryItem/AddGalleryItem'
+import GalleryItem from './components/GalleryItem/GalleryItem'
+import classes from './App.module.css'
+
+const App = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [galleryItems, setGalleryItems] = useState([])
+
+  const onOpenModal = () => setIsModalOpen(true)
+  const onCloseModal = () => setIsModalOpen(false)
+
+  const addItemToGallery = (title, image) => {
+    setGalleryItems((prevState) => [{ title, image }, ...prevState])
+    onCloseModal()
+  }
+
+  const removeItemFromGallery = (i) =>
+    setGalleryItems((prevState) =>
+      prevState.filter((galleryItem, index) => index !== i)
+    )
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.app}>
+      <Header />
+      <Button btnType="green" clicked={onOpenModal}>
+        NEW
+      </Button>
+      <Modal show={isModalOpen} backdropClicked={onCloseModal}>
+        <AddGalleryItem closeModal={onCloseModal} addItem={addItemToGallery} />
+      </Modal>
+      {galleryItems.map((galleryItem, index) => (
+        <GalleryItem
+          title={galleryItem.title}
+          url={galleryItem.image}
+          key={`gallery-item-${index}`}
+          removeItem={() => removeItemFromGallery(index)}
+        />
+      ))}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

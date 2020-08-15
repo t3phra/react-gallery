@@ -1,0 +1,22 @@
+.btn {
+  height: 50px;
+  width: 120px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background-color: white;
+  outline: none;
+  border: 1px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.green {
+  color: #a4e35d;
+  border: 1px solid #a4e35d;
+}
+
+@media (max-width: 500px) {
+  .btn {
+    width: 270px;
+  }
+}
